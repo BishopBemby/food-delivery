@@ -1,0 +1,65 @@
+.logo {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.header, .restaurants, .search {
+  display: flex;
+  margin: 20px;
+  justify-content: space-between;
+}
+
+.nav-items {
+  gap: 20px;
+  font-size: 18px;
+  font-weight: 500;
+
+  ul {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+  }
+}
+
+.restaurant-card-container {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.search {
+  justify-content: center;
+  margin: 0 30%;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.restaurant-card {
+  width: 200px;
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out;
+
+  &:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.restaurant-card-image {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+}
