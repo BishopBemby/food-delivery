@@ -42,6 +42,21 @@
   border-radius: 5px;
 }
 
+.filter-btn{
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #ff6347;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 30px;
+
+  &:hover {
+    background-color: #ff4500;
+  }
+}
+
 .restaurant-card {
   width: 200px;
   border-radius: 10px;
