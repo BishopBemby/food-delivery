@@ -3,18 +3,65 @@ import ReactDOM from "react-dom/client";
 import Header from "./components/Header";
 //Don't import them as named imports like import {Body} from "./components/Body"; because we are exporting them as default exports, if we import them as named imports then we have to use the same name as the export name, but if we import them as default imports then we can use any name we want to import them. So, it is better to use default exports to avoid confusion and make the code more readable.
 import Body from "./components/Body";
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import About from "./components/About";
+import ContactUs from "./components/ContactUs";
+import Error from "./components/Error";
+import RestaurantMenu from "./components/RestaurantMenu";
+
+//createBrowserRouter is a function provided by react-router-dom that is used to create a router object that can be used to define the routes for our application. It takes an array of route objects as an argument, where each route object defines a path and the component to be rendered when that path is matched. In the above code, we are defining three routes: the root route ("/") which renders the Body component, the "/about" route which renders the About component, and the "/contact" route which renders the ContactUs component. We are also defining an error route which renders the Error component when there is an error in matching any of the defined routes.
+
+//RouterProvider is a component provided by react-router-dom that is used to provide the router object to the rest of the application. It takes the router object created by createBrowserRouter as a prop and makes it available to all the components in the application. In the above code, we are wrapping our entire application with the RouterProvider component and passing the router object as a prop to it. This way, all the components in our application can access the router object and use it to navigate between different routes.
 
 const AppLayout = () => {
   return (
     <div className="app-layout">
       <Header />
-      <Body />
+      <Outlet />
     </div>
   );
 };
 
+//Outlet is a component provided by react-router-dom that is used to render the matched child route component. It is used in the parent route component to render the child route component when the path matches. In the above code, we are using Outlet in the AppLayout component to render the Body component when the path is "/" and to render the About component when the path is "/about" and to render the ContactUs component when the path is "/contact". This way, we can have a common layout for all the routes and only change the content based on the route.
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <AppLayout />,
+    children: [
+      {
+        path: "/",
+        element: <Body />,
+      },
+      {
+        path: "/about",
+        element: <About />,
+      },
+      {
+        path: "/contact",
+        element: <ContactUs />,
+      },
+      {
+        path: "/restaurants/:resId",
+        element: <RestaurantMenu />,
+      }
+    ],
+    errorElement: <Error />,
+  },
+  // {
+  //   path: "/about",
+  //   element: <About />,
+  // },
+  // {
+  //   path: "/contact",
+  //   element: <ContactUs />,
+  // }
+]);
+
+//resId is a dynamic parameter that is passed to the RestaurantMenu component when the path is "/restaurants/:resId". It is used to identify the specific restaurant to display the menu for.
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<AppLayout />);
+root.render(<RouterProvider router={router} />);
 
 //important points to remember:
 //1. React is a JavaScript library for building user interfaces.
@@ -158,3 +205,10 @@ root.render(<AppLayout />);
 //virtual DOM is a concept in React that allows it to efficiently update the UI by keeping a virtual representation of the DOM in memory. When the state of a component changes, React updates the virtual DOM and then compares it with the previous version of the virtual DOM to determine which parts of the actual DOM need to be updated. This process is called reconciliation and it helps React to minimize the number of updates to the actual DOM, which can improve performance and make the UI more responsive.
 
 //React Fiber is a new reconciliation algorithm in React that allows it to break down the rendering work into smaller chunks and prioritize them based on their importance. This allows React to keep the UI responsive even when there are heavy computations or updates happening in the background. React Fiber also introduces the concept of "time slicing", which allows React to pause and resume work as needed, further improving performance and responsiveness. Overall, React Fiber is a significant improvement to the React rendering process and helps to make React applications faster and more efficient.
+
+//2 ways to fetch data from API - first call APi, api takes 2 seconds, so blank page, and then rendering of UI happens. second, we call API, the rendering happens first and then API is called, then APP is rendered, React uses 2nd approach.
+
+
+//2 types of RENDERING - client side rendering and server side rendering. In client side rendering, the rendering is handled by the client (browser) and the server only serves the initial HTML file. In server side rendering, the rendering is handled by the server and the client receives the fully rendered HTML. React provides tools for both approaches.
+
+//4 types of routing - static routing, dynamic routing, client routing, server routing. Static routing is when the routes are defined in the code and do not change based on user input or other factors. Dynamic routing is when the routes can change based on user input or other factors. Client routing is when the routing is handled by the client (browser) and the server only serves the initial HTML file. Server routing is when the routing is handled by the server and the client makes a request to the server for each route change. React Router provides client side routing for React applications, allowing us to create single page applications with multiple routes without having to reload the page.

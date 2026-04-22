@@ -10,6 +10,20 @@
   justify-content: space-between;
 }
 
+.search-btn{
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #ff6347;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #ff4500;
+  }
+}
+
 .nav-items {
   gap: 20px;
   font-size: 18px;
@@ -56,6 +70,79 @@
     background-color: #ff4500;
   }
 }
+
+.shimmer-card-container {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.shimmer-card {
+  width: 200px;
+  height: 250px;
+  border-radius: 10px;
+  background-color: #f0f0f0;
+  animation: shimmer 1.5s infinite linear;
+}
+
+.shimmer{
+  background: linear-gradient(to right, #f0f0f0 0%, #e0e0e0 20%, #f0f0f0 40%, #f0f0f0 100%);
+  background-size: 200% auto;
+}
+
+ul{
+  display: flex;
+    align-items: anchor-center;
+}
+
+.login-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #ff6347;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #ff4500;
+  }
+}
+
+.shimmer-card-image {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.shimmer-card-name{
+  width: 80%;
+  height: 20px;
+  margin: 10px auto;
+  border-radius: 5px;
+}
+
+.shimmer-card-rating{
+  width: 40%;
+  height: 20px;
+  margin: 10px auto;
+  border-radius: 5px;
+}
+.shimmer-card-deliveryTime{
+  width: 60%;
+  height: 20px;
+  margin: 10px auto;
+  border-radius: 5px;
+}
+
+.shimmer-card-cost{
+  width: 50%;
+  height: 20px;
+  margin: 10px auto;
+  border-radius: 5px;
+}
+
 
 .restaurant-card {
   width: 200px;
