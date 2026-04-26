@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import useStatus from "../utils/hooks/useStatus";
 
 const NavItems = () => {
   
   const [btnName, setBtnName] = useState("Login");
+  const online = useStatus();
   console.log(btnName);
   //in above once setBtnName is called, the component re-renders and the new value of btnName is reflected in the UI. This is because useState is a hook that allows us to manage state in a functional component, and when we update the state using the setter function (setBtnName), it triggers a re-render of the component - navItems component, and the UI is updated with the new state value.
   const loginHandler = () => {
@@ -18,7 +20,10 @@ const NavItems = () => {
   return (
     <div className="nav-items">
       <ul>
+        <li>Status: {online ? 
+        <span className="online">Online</span> : <span className="offline">Offline</span>}</li>
         <li><Link to="/">Home</Link></li>
+        <li><Link to="/grocery">Grocery</Link></li>
         <li><Link to="/about">About</Link></li>
         <li><Link to="/contact">Contact</Link></li>
         <li><Link to="/cart">Cart</Link></li>

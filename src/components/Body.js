@@ -3,8 +3,12 @@ import resList from "../utils/mockData";
 import { useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
+import useStatus from "../utils/hooks/useStatus";
 
 const Body = () => {
+  //custom hook to find the status of user if online or offline
+  const isOnline = useStatus();
+
   //normal variable -
   // if we change the value of this variable, it will not trigger a re-render of the component, because it is not a state variable. React doesn't allow us to change the value of a normal variable inside a functional component. Why? - React makes UI layer and data layer work together, so if we change the value of a normal variable inside a functional component, it will not trigger a re-render of the component. So, if we want to change the value of this variable and trigger a re-render of the component, we need to use a state variable instead of a normal variable. For example, we can use useState hook to create a state variable for the list of restaurants and then update that state variable when we want to change the list of restaurants. This way, when we update the state variable, it will trigger a re-render of the component and the UI will be updated with the new list of restaurants.
   //   let listOfRestaurants = resList;
@@ -36,7 +40,7 @@ const Body = () => {
 
   const fetchData = async () => {
     const data = await fetch(
-      "https://namastedev.com/api/v1/listRestaurants",
+      "https://corsproxy.io/?url=https://namastedev.com/api/v1/listRestaurants",
     );
     const json = await data.json();
     console.log(
@@ -71,6 +75,10 @@ const Body = () => {
     //use pizza in search and hit search, it will return all the restaurants that have pizza in their name, because we are using include operator. If we use === operator, it will return only the restaurants that have the exact name as pizza, which may not be what we want as it may break code. Therefore, it is important to choose the right operator based on the desired behavior of the search functionality.
     setFilteredListOfRestaurants(restaurants);
   };
+
+  if(!isOnline) {
+    return <h1>Offline, please check your internet connection</h1>
+  }
 
   return listOfRestaurants.length === 0 ? (
     <Shimmer />

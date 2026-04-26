@@ -1,4 +1,4 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import Header from "./components/Header";
 //Don't import them as named imports like import {Body} from "./components/Body"; because we are exporting them as default exports, if we import them as named imports then we have to use the same name as the export name, but if we import them as default imports then we can use any name we want to import them. So, it is better to use default exports to avoid confusion and make the code more readable.
@@ -8,10 +8,15 @@ import About from "./components/About";
 import ContactUs from "./components/ContactUs";
 import Error from "./components/Error";
 import RestaurantMenu from "./components/RestaurantMenu";
+import HandleResizeComponent from "./components/handleResize";
 
 //createBrowserRouter is a function provided by react-router-dom that is used to create a router object that can be used to define the routes for our application. It takes an array of route objects as an argument, where each route object defines a path and the component to be rendered when that path is matched. In the above code, we are defining three routes: the root route ("/") which renders the Body component, the "/about" route which renders the About component, and the "/contact" route which renders the ContactUs component. We are also defining an error route which renders the Error component when there is an error in matching any of the defined routes.
 
 //RouterProvider is a component provided by react-router-dom that is used to provide the router object to the rest of the application. It takes the router object created by createBrowserRouter as a prop and makes it available to all the components in the application. In the above code, we are wrapping our entire application with the RouterProvider component and passing the router object as a prop to it. This way, all the components in our application can access the router object and use it to navigate between different routes.
+
+//lazy loading is a technique used to split the application into smaller chunks of code that are loaded on-demand, which can improve performance and reduce the initial load time. In React, we can use the lazy function provided by React to lazy load components. The lazy function takes a function that returns a promise as an argument, and it returns a component that can be rendered. When the component is rendered for the first time, the promise is resolved and the component is loaded. In the above code, we are using lazy loading to load the Grocery component only when it is needed, which can improve the performance of our application by reducing the initial load time.
+const Grocery = lazy(() => import("./components/Grocery"));
+//wrap grocery component inside Suspense component to show a fallback UI while the grocery component is being loaded. The fallback prop of the Suspense component is used to specify the UI that should be shown while the lazy loaded component is being loaded. In the above code, we are showing a simple "Loading..." message while the Grocery component is being loaded. WIthout suspense, we would not be able to show any UI while the lazy loaded component is being loaded, which can lead to a poor user experience.
 
 const AppLayout = () => {
   return (
@@ -34,6 +39,18 @@ const router = createBrowserRouter([
         element: <Body />,
       },
       {
+        path: "/handle",
+        element: <HandleResizeComponent />,
+      },
+      {
+        path: "/grocery",
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Grocery />
+          </Suspense>
+        ),
+      },
+      {
         path: "/about",
         element: <About />,
       },
@@ -44,7 +61,7 @@ const router = createBrowserRouter([
       {
         path: "/restaurants/:resId",
         element: <RestaurantMenu />,
-      }
+      },
     ],
     errorElement: <Error />,
   },
@@ -208,7 +225,14 @@ root.render(<RouterProvider router={router} />);
 
 //2 ways to fetch data from API - first call APi, api takes 2 seconds, so blank page, and then rendering of UI happens. second, we call API, the rendering happens first and then API is called, then APP is rendered, React uses 2nd approach.
 
-
 //2 types of RENDERING - client side rendering and server side rendering. In client side rendering, the rendering is handled by the client (browser) and the server only serves the initial HTML file. In server side rendering, the rendering is handled by the server and the client receives the fully rendered HTML. React provides tools for both approaches.
 
 //4 types of routing - static routing, dynamic routing, client routing, server routing. Static routing is when the routes are defined in the code and do not change based on user input or other factors. Dynamic routing is when the routes can change based on user input or other factors. Client routing is when the routing is handled by the client (browser) and the server only serves the initial HTML file. Server routing is when the routing is handled by the server and the client makes a request to the server for each route change. React Router provides client side routing for React applications, allowing us to create single page applications with multiple routes without having to reload the page.
+
+/**
+ * createBrowserRouter vs BrowserRouter - createBrowserRouter is a function provided by react-router-dom that is used to create a router object that can be used to define the routes for our application. It takes an array of route objects as an argument, where each route object defines a path and the component to be rendered when that path is matched. On the other hand, BrowserRouter is a component provided by react-router-dom that is used to wrap our entire application and provide the routing functionality. It uses the HTML5 history API to keep the UI in sync with the URL. The main difference between createBrowserRouter and BrowserRouter is that createBrowserRouter allows us to define our routes in a more structured way using an array of route objects, while BrowserRouter requires us to define our routes using Route components inside the BrowserRouter component. Overall, createBrowserRouter provides a more flexible and organized way to define routes in our React application compared to BrowserRouter.
+ */
+
+/** createHashRouter vs createMemoryRouter - createHashRouter is a function provided by react-router-dom that is used to create a router object that uses the hash portion of the URL to manage routing. It is useful for applications that are deployed on servers that do not support HTML5 history API. On the other hand, createMemoryRouter is a function provided by react-router-dom that is used to create a router object that keeps its location in memory, rather than using the browser's URL. It is useful for testing and applications that do not have a traditional URL structure. */
+
+/** Lazy loading is also known as "code splitting"/ "dynamic import" or "on-demand loading". It is a technique used to split the application into smaller chunks of code that are loaded on-demand, which can improve performance and reduce the initial load time. */

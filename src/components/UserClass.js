@@ -3,18 +3,20 @@ import React from "react";
 class UserClass extends React.Component {
   //constructor method is used to initialize the state of the component. It is a required method in a class component. It is called before the component is mounted on the DOM. The constructor method takes props as an argument and passes it to the super class using super(props). This is necessary to access the props in the component. In the constructor method, we can also initialize the state of the component using this.state. The state is an object that holds the data that can change over time and affects the rendering of the component.
   constructor(props) {
-    console.log("constructor");
+    // console.log("constructor");
     super(props);
     //mandatory to call the super class constructor in a subclass constructor. If you do not call super(props) in the constructor of a class component, you will not be able to access this.props in the component. This is because the props are passed to the super class constructor and if you do not call it, the props will not be available in the component. So it is important to call super(props) in the constructor of a class component to ensure that the props are available in the component.
 
     this.state = {
-      count: 0,
-      count22: 0,
+      userInfo: {
+        name: "Bishop Bemby",
+        location: "Amritsar",
+      },
     };
   }
   //render method is used to render the UI of the component. It is a required method in a class component. It returns the JSX that will be rendered on the screen. The render method is called every time the state or props of the component changes. It is also called when the component is first rendered on the screen.
   render() {
-    console.log("render");
+    // console.log("render");
     const { name, location } = this.props;
     const { count, count22 } = this.state;
     return (
@@ -37,15 +39,21 @@ class UserClass extends React.Component {
   }
 
   componentDidUpdate() {
-    console.log("componentDidUpdate");
+    // console.log("componentDidUpdate");
   }
 
   componentWillUnmount() {
-    console.log("componentWillUnmount");
+    // console.log("componentWillUnmount");
   }
 
-  componentDidMount() {
-    console.log("componentDidMount");
+  async componentDidMount() {
+    // console.log("componentDidMount");
+    // const data = await fetch("hhttps://api.cors.lol/?url=https://api.github.com/users/bishopbemby");
+    // const json = await data?.json();
+    // console.log(
+    //   json
+    // );
+    // this.setState({ userInfo: json });
   }
 }
 

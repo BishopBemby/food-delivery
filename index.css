@@ -24,6 +24,16 @@
   }
 }
 
+.online {
+  color: green;
+  font-weight: bold;
+}
+
+.offline {
+  color: red;
+  font-weight: bold;
+}
+
 .nav-items {
   gap: 20px;
   font-size: 18px;

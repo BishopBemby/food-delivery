@@ -1,24 +1,13 @@
 import { useState, useEffect } from "react";
 import Shimmer from "./Shimmer";
-import { constants } from "../utils/constants";
 import { useParams } from "react-router-dom";
+import useRestaurantMenu from "../utils/hooks/useRestaurantMenu";
 const RestaurantMenu = () => {
-  const [resInfo, setResInfo] = useState(null);
   const { resId } = useParams();
   //resId is coming from the URL. We are using useParams hook to get the resId from the URL. The useParams hook returns an object of key/value pairs of the dynamic params from the current URL that were matched by the <Route path>. In this case, we have defined a route for the restaurant menu page as /restaurants/:resId, where :resId is a dynamic parameter that will match any value in that position in the URL. So when we navigate to a restaurant menu page, the resId will be extracted from the URL and we can use it to fetch the restaurant menu data from the API.s
 
-  useEffect(() => {
-    fetchMenu();
-  }, []);
-
-  const fetchMenu = async () => {
-    const data = await fetch(constants.MENU_URL + resId);
-    const json = await data?.json();
-    console.log(
-      json.data.cards[4].groupedCard.cardGroupMap.REGULAR.cards[1].card.card,
-    );
-    setResInfo(json.data);
-  };
+  //below is a custom hook that we have created to fetch the restaurant menu data from the API. We are passing the resId as an argument to the custom hook and it will return the restaurant menu data. We are using this custom hook in our RestaurantMenu component to fetch the restaurant menu data and render it on the screen.
+  const resInfo = useRestaurantMenu(resId);
 
   if (resInfo === null) {
     return <Shimmer />;
