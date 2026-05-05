@@ -1,6 +1,5 @@
 import { constants } from "../utils/constants";
-export const RestaurantCard = ({resData}) => {
- 
+export const RestaurantCard = ({ resData }) => {
   // you can use ({name, rating, deliveryTime, cost}) instead of props and then use name, rating, deliveryTime and cost instead of props.name, props.rating, props.deliveryTime and props.cost respectively
 
   // you can also use const {name, rating, deliveryTime, cost} = props; instead of ({name, rating, deliveryTime, cost}) and then use name, rating, deliveryTime and cost instead of props.name, props.rating, props.deliveryTime and props.cost respectively
@@ -8,18 +7,20 @@ export const RestaurantCard = ({resData}) => {
   //config driven UI - UI which is driven by the data. Here we are passing the data as props to the RestaurantCard component and then using that data to render the UI. This way we can easily change the UI by changing the data without changing the code.
   const { name, avgRating, sla, costForTwo, cloudinaryImageId } = resData?.info;
 
-   console.log("resData in restaurant card", resData?.info);
+  console.log("resData in restaurant card", resData?.info);
   return (
-    <div className="restaurant-card">
-      <img
-        src={constants.FETCH_IMG_URL + cloudinaryImageId}
-        alt="restaurant"
-        className="restaurant-card-image"
-      />
-      <h2>{name}</h2>
-      <h3>{avgRating}</h3>
-      <h3>{sla?.slaString}</h3>
-      <h3>{costForTwo}</h3>
+    <div className="flex flex-col border-gray-300 shadow-md w-96 hover:shadow-xl">
+      <img src={ constants.FETCH_IMG_URL ? constants.FETCH_IMG_URL + cloudinaryImageId : constants.LOGO_URL + cloudinaryImageId} alt="restaurant" />
+      <div className=" flex flex-col p-4">
+        <div className="flex justify-between">
+          <span className="font-bold text-xl">{name}</span>
+          <span className="font-bold text-xl">{avgRating}</span>
+        </div>
+        <div className="flex justify-between">
+          <span>{sla?.slaString}</span>
+          <span>{costForTwo}</span>
+        </div>
+      </div>
     </div>
   );
 };

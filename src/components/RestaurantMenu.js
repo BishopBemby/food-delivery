@@ -23,20 +23,30 @@ const RestaurantMenu = () => {
   console.log("Items", itemCards);
 
   return (
-    <div className="restaurant-menu">
-      <h1>{name}</h1>
-      <h3>{cuisines.join(", ")}</h3>
-      <p>Rating: {avgRating}</p>
-      <p>Delivery Time: {sla?.deliveryTime}</p>
-      <img src={cloudinaryImageId} alt={name} />
-      <p>Cost for Two: {costForTwo}</p>
-      <h2>Menu</h2>
-      <ul>
+    <div className="px-16 py-16 flex flex-col">
+      <div className="flex justify-between mb-4">
+        <div className="flex flex-col">
+          <span className="font-bold text-3xl">{name}</span>
+          <span className="text-md pt-2">{cuisines.join(", ")}</span>
+        </div>
+        <span className="font-bold text-lg">Rating: {avgRating}</span>
+      </div>
+
+      <img className="w-full h-96" src={cloudinaryImageId} alt={name} />
+      <div className="flex justify-between">
+        <span className="font-bold text-lg">Cost for Two: {costForTwo}</span>
+        <span className="font-bold text-lg">
+          Delivery Time: {sla?.deliveryTime} mins
+        </span>
+      </div>
+
+      <span className="font-bold text-lg mt-8 mb-2">Menu</span>
+      <ul className="flex flex-col">
         {itemCards?.map((item) => (
-          <li key={item.card.info.id}>
-            <h3>{item.card.info.name}</h3>
-            <p>{item.card.info.description}</p>
-            <p>{item.card.info.price / 100}</p>
+          <li className="py-2 flex items-baseline gap-4" key={item.card.info.id}>
+            <span className="font-bold">{item.card.info.name}</span>
+            <span className="text-sm">{item.card.info.description}</span>
+            <span className="font-bold">Rs. {item.card.info.price / 100}</span>
           </li>
         ))}
       </ul>

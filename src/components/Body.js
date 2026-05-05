@@ -14,11 +14,12 @@ const Body = () => {
   //   let listOfRestaurants = resList;
   //state variable - if we change the value of this variable, it will trigger a re-render of the component, because it is a state variable. So, if we want to change the value of this variable and trigger a re-render of the component, we can use useState hook to create a state variable for the list of restaurants and then update that state variable when we want to change the list of restaurants. This way, when we update the state variable, it will trigger a re-render of the component and the UI will be updated with the new list of restaurants.
   const [listOfRestaurants, setListOfRestaurants] = useState([]);
-  const [filteredListOfRestaurants, setFilteredListOfRestaurants] = useState([]);
+  const [filteredListOfRestaurants, setFilteredListOfRestaurants] = useState(
+    [],
+  );
   //array destructured version of above code - const listOfRestaurants = useState(resList)[0]; and const setListOfRestaurants = useState(resList)[1];
   const listOFRestaurants2 = useState(resList)[0];
   const setListOfRestaurants2 = useState(resList)[1];
-
 
   const [searchText, setSearchText] = useState("");
 
@@ -32,7 +33,7 @@ const Body = () => {
   }, []);
   //In above, if no dependency array is provided, the useEffect will run every time the component is rendered, which can lead to infinite loop and performance issues. Therefore, it is important to provide an empty dependency array to run the useEffect only once when the component is mounted.
   //if we provide a dependency array with some variables, it will call the function only when those variables change. For example, if we provide [searchText] as a dependency array, it will call the function only when the searchText variable changes. This way, we can optimize the performance of our component by only calling the function when necessary. However, in this case, we want to fetch the data only once when the component is mounted, so we provide an empty dependency array to run the useEffect only once when the component is mounted.
-  
+
   //empty dependency array means this useEffect will run only once when the component is mounted, if we do not provide empty dependency array, it will run every time the component is rendered, which can lead to infinite loop and performance issues.
 
   console.log("outside useEffect");
@@ -45,17 +46,17 @@ const Body = () => {
     const json = await data.json();
     console.log(
       "fetched data",
-      json.data.data.cards[1].card.card.gridElements.infoWithStyle.restaurants
+      json.data.data.cards[1].card.card.gridElements.infoWithStyle.restaurants,
     );
-    //optional chaining - 
+    //optional chaining -
     // it is a feature in JavaScript that allows us to access nested properties of an object without having to check if each property in the chain exists. It is denoted by the ?. operator. In the above code, we are using optional chaining to access the nested properties of the json object that we fetched from the API. This way, if any of the properties in the chain do not exist, it will return undefined instead of throwing an error. This helps to prevent runtime errors and makes our code more robust. In this case, we are trying to access the list of restaurants from the fetched data, and if any of the properties in the chain do not exist, it will return undefined instead of throwing an error.
     const extractedData =
       json.data.data.cards[1].card.card.gridElements.infoWithStyle.restaurants;
-      setListOfRestaurants(extractedData);
-      setFilteredListOfRestaurants(extractedData);
+    setListOfRestaurants(extractedData);
+    setFilteredListOfRestaurants(extractedData);
   };
 
-  //conditional rendering - 
+  //conditional rendering -
   // it is a technique in React that allows us to render different UI based on certain conditions. In the below code, we are using conditional rendering to show a shimmer effect while the data is being fetched from the API. If the list of restaurants is empty, it means that the data is still being fetched, so we show the Shimmer component. Once the data is fetched and the list of restaurants is updated, it will trigger a re-render of the component and the UI will be updated with the list of restaurants. This way, we can provide a better user experience by showing a loading indicator while the data is being fetched.
   // if(listOfRestaurants.length === 0) {
   //   return <Shimmer />
@@ -68,7 +69,7 @@ const Body = () => {
       return;
     }
     const restaurants = listOfRestaurants.filter((res) =>
-      res.info.name.toLowerCase().includes(searchText.toLowerCase())
+      res.info.name.toLowerCase().includes(searchText.toLowerCase()),
     );
     //difference between include and === is that include is used to check if a string contains another string, while === is used to check if two values are equal. In the above code, we are using === to check if the name of the restaurant is exactly equal to the search text, which means that it will only return the restaurants that have the exact name as the search text. If we use include instead of ===, it will return all the restaurants that have the search text as a part of their name, which can lead to more results being returned than expected. Therefore, it is important to choose the right operator based on the desired behavior of the search functionality.
 
@@ -76,35 +77,37 @@ const Body = () => {
     setFilteredListOfRestaurants(restaurants);
   };
 
-  if(!isOnline) {
-    return <h1>Offline, please check your internet connection</h1>
+  if (!isOnline) {
+    return <h1>Offline, please check your internet connection</h1>;
   }
 
   return listOfRestaurants.length === 0 ? (
     <Shimmer />
   ) : (
-    <div className="body">
-      <div className="search">
+    <div className="flex flex-col">
+      <div className="flex items-center justify-center gap-8 w-full py-8">
         <input
           type="text"
           placeholder="Search for restaurants and food"
-          className="search-input"
+          className="w-1/5 h-10 p-2 border border-gray-300 rounded-md"
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
         />
         <button
-          className="search-btn"
+          className="bg-orange-500 hover:bg-orange-400 hover:text-white py-2 px-4 rounded"
           onClick={search}
         >
           Search
         </button>
       </div>
-      <div className="filter">
+      <div className="flex items-center justify-start ml-16 py-10">
         <button
-          className="filter-btn"
+          className="bg-orange-500 hover:bg-orange-400 hover:text-white py-2 px-4 rounded"
           onClick={() => {
             //following code is not working
-            const filteredList = listOfRestaurants.filter((res) => res.info.avgRating > 4.0);  
+            const filteredList = listOfRestaurants.filter(
+              (res) => res.info.avgRating > 4.0,
+            );
             setFilteredListOfRestaurants(
               filteredList.sort((a, b) => b.info.avgRating - a.info.avgRating),
             );
@@ -129,10 +132,13 @@ const RestaurantsContainer = ({ resData }) => {
 
   console.log("resData in restaurant container", resData);
   return (
-    <div className="restaurant-card-container">
+    <div className="flex flex-wrap gap-6 ml-16 mb-40 ">
       {resData?.map((restaurant) => {
         return (
-          <Link to={"/restaurants/" + restaurant.info.id} key={restaurant.info.id}>
+          <Link
+            to={"/restaurants/" + restaurant.info.id}
+            key={restaurant.info.id}
+          >
             <RestaurantCard resData={restaurant} key={restaurant.info.id} />
           </Link>
         );
@@ -159,11 +165,10 @@ export default Body;
 
 //Diff algorithm - also known as`reconciliation algorithm` or "React fiber" - it is a algorithm that React uses to determine which parts of the actual DOM need to be updated when the state of a component changes.
 
-// difference between JS expression and JS statement - A JavaScript expression is a piece of code that evaluates to a value, while a JavaScript statement is a piece of code that performs an action. In React, we can use JavaScript expressions inside JSX to dynamically render content based on the state or props of a component. For example, we can use a ternary operator (which is an expression) to conditionally render different UI elements based on the value of a state variable. On the other hand, JavaScript statements are used to perform actions such as updating state, making API calls, or handling events. In React components, we typically use statements inside event handlers or lifecycle methods to perform actions based on user interactions or component lifecycle events. Eg. 
+// difference between JS expression and JS statement - A JavaScript expression is a piece of code that evaluates to a value, while a JavaScript statement is a piece of code that performs an action. In React, we can use JavaScript expressions inside JSX to dynamically render content based on the state or props of a component. For example, we can use a ternary operator (which is an expression) to conditionally render different UI elements based on the value of a state variable. On the other hand, JavaScript statements are used to perform actions such as updating state, making API calls, or handling events. In React components, we typically use statements inside event handlers or lifecycle methods to perform actions based on user interactions or component lifecycle events. Eg.
 // const handleClick = () => {
-  // This is a JavaScript statement that performs an action when the button is clicked
+// This is a JavaScript statement that performs an action when the button is clicked
 //   setCount(count + 1);
 // }
-
 
 //What is async and await? - async and await are keywords in JavaScript that allow us to handle asynchronous code in a more readable and efficient way. They are used together to make API calls and handle data in React.
