@@ -1,9 +1,12 @@
-import RestaurantCard from "./RestaurantCard";
+import RestaurantCard, { promotedCard } from "./RestaurantCard";
+import UserContext from "../utils/UserContext";
 import resList from "../utils/mockData";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import useStatus from "../utils/hooks/useStatus";
+
+const PromotedRestaurant = promotedCard(RestaurantCard);
 
 const Body = () => {
   //custom hook to find the status of user if online or offline
@@ -81,6 +84,8 @@ const Body = () => {
     return <h1>Offline, please check your internet connection</h1>;
   }
 
+  const { loggedInUser, setUserName } = useContext(UserContext);
+
   return listOfRestaurants.length === 0 ? (
     <Shimmer />
   ) : (
@@ -116,6 +121,15 @@ const Body = () => {
           Top rated restaurants
         </button>
       </div>
+
+      <div className="flex items-center justify-start ml-16 py-10">
+        <label className="mr-2">User Name:</label>
+        <input
+          className="border-2 border-solid h-10"
+          value={loggedInUser}
+          onChange={(e) => setUserName(e.target.value)}
+        />
+      </div>
       <div className="restaurants">
         <RestaurantsContainer resData={filteredListOfRestaurants} />
       </div>
@@ -139,7 +153,14 @@ const RestaurantsContainer = ({ resData }) => {
             to={"/restaurants/" + restaurant.info.id}
             key={restaurant.info.id}
           >
-            <RestaurantCard resData={restaurant} key={restaurant.info.id} />
+            {restaurant.info.id.includes("1") ? (
+              <PromotedRestaurant
+                resData={restaurant}
+                key={restaurant.info.id}
+              />
+            ) : (
+              <RestaurantCard resData={restaurant} key={restaurant.info.id} />
+            )}
           </Link>
         );
       })}

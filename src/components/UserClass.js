@@ -1,5 +1,6 @@
 //class component
 import React from "react";
+import UserContext from "../utils/UserContext";
 class UserClass extends React.Component {
   //constructor method is used to initialize the state of the component. It is a required method in a class component. It is called before the component is mounted on the DOM. The constructor method takes props as an argument and passes it to the super class using super(props). This is necessary to access the props in the component. In the constructor method, we can also initialize the state of the component using this.state. The state is an object that holds the data that can change over time and affects the rendering of the component.
   constructor(props) {
@@ -22,6 +23,10 @@ class UserClass extends React.Component {
     return (
       <div>
         {/* Never update state directly in a class component. Instead, use the setState method to update the state. */}
+        <UserContext.Consumer>
+          {({ loggedInUser }) => <h1>{loggedInUser}</h1>}
+        </UserContext.Consumer>
+        {/* ABove we used the Consumer component to access the context fro class based component.  */}
         <button onClick={() => this.setState({ count: this.state.count + 1 })}>
           Clicked {count} times
         </button>

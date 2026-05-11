@@ -10,7 +10,14 @@ export const RestaurantCard = ({ resData }) => {
   console.log("resData in restaurant card", resData?.info);
   return (
     <div className="flex flex-col border-gray-300 shadow-md w-96 hover:shadow-xl">
-      <img src={ constants.FETCH_IMG_URL ? constants.FETCH_IMG_URL + cloudinaryImageId : constants.LOGO_URL + cloudinaryImageId} alt="restaurant" />
+      <img
+        src={
+          constants.FETCH_IMG_URL
+            ? constants.FETCH_IMG_URL + cloudinaryImageId
+            : constants.LOGO_URL + cloudinaryImageId
+        }
+        alt="restaurant"
+      />
       <div className=" flex flex-col p-4">
         <div className="flex justify-between">
           <span className="font-bold text-xl">{name}</span>
@@ -25,6 +32,28 @@ export const RestaurantCard = ({ resData }) => {
   );
 };
 
+// HOC
+export const promotedCard = (RestaurantCard) => {
+  return (props) => {
+    return (
+      <div>
+        <label className="absolute bg-black text-white m-2 p-2">Promoted</label>
+        <RestaurantCard {...props} />
+      </div>
+    );
+  };
+};
+
 export default RestaurantCard;
 
 // Here I did both named and default exports. Is this valid? => Yes, it is valid to have both named and default exports in the same file. You can have multiple named exports and one default export in a file. In this case, we have a named export for the RestaurantCard component and a default export for the same component. When you import this component in another file, you can choose to import it as a named import or as a default import. For example, you can do import { RestaurantCard } from "./RestaurantCard"; to import it as a named import, or you can do import RestaurantCard from "./RestaurantCard"; to import it as a default import. Both will work fine.
+
+/** Higher Order Component - A component that takes another component as an argument and returns a new component */
+
+/** HOC === Pure Functions that take a component as an argument and return a new component - doesn't change the original component */
+
+/** Impure Functions - Functions that change the original component */
+
+/** Controlled Component - A component whose state is managed by the parent component, and the parent component is responsible for updating the state */
+
+/** Uncontrolled Component - A component whose state is managed by the browser, and the browser is responsible for updating the state */

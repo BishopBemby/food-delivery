@@ -1,9 +1,10 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import Header from "./components/Header";
 //Don't import them as named imports like import {Body} from "./components/Body"; because we are exporting them as default exports, if we import them as named imports then we have to use the same name as the export name, but if we import them as default imports then we can use any name we want to import them. So, it is better to use default exports to avoid confusion and make the code more readable.
 import Body from "./components/Body";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import UserContext from "./utils/UserContext";
 import About from "./components/About";
 import ContactUs from "./components/ContactUs";
 import Error from "./components/Error";
@@ -19,13 +20,26 @@ const Grocery = lazy(() => import("./components/Grocery"));
 //wrap grocery component inside Suspense component to show a fallback UI while the grocery component is being loaded. The fallback prop of the Suspense component is used to specify the UI that should be shown while the lazy loaded component is being loaded. In the above code, we are showing a simple "Loading..." message while the Grocery component is being loaded. WIthout suspense, we would not be able to show any UI while the lazy loaded component is being loaded, which can lead to a poor user experience.
 
 const AppLayout = () => {
+  const [userName, setUserName] = useState("");
+
+  useEffect(() => {
+    //Some API call
+    setUserName("Bishop Bemby");
+  }, []);
+
   return (
-    <div className="">
-      <Header />
-      <Outlet />
-    </div>
+    <UserContext.Provider value={{ loggedInUser: userName, setUserName }}>
+      <div className="">
+        {/* <UserContext.Provider value={{ loggedInUser: "Rajib Ghosh" }}> */}
+          <Header />
+        {/* </UserContext.Provider> */}
+        <Outlet />
+      </div>
+    </UserContext.Provider>
   );
 };
+
+//Above for UserContext.Provider can be nested and have multiple providers.
 
 //Outlet is a component provided by react-router-dom that is used to render the matched child route component. It is used in the parent route component to render the child route component when the path matches. In the above code, we are using Outlet in the AppLayout component to render the Body component when the path is "/" and to render the About component when the path is "/about" and to render the ContactUs component when the path is "/contact". This way, we can have a common layout for all the routes and only change the content based on the route.
 
@@ -214,7 +228,7 @@ root.render(<RouterProvider router={router} />);
 
 //es6 is mandatory for react? - Yes, ES6 is mandatory for React because React uses ES6 syntax and features such as arrow functions, destructuring, spread operator, rest operator, template literals, etc. to create components and manage state and props. Without ES6, it would be difficult to write and understand React code. Therefore, it is important to have a good understanding of ES6 syntax and features to work with React effectively.
 
-//to write commments in JSX, we can use the following syntax:
+//to write comments in JSX, we can use the following syntax:
 // {/* This is a comment in JSX */}
 
 //React.fragment is a component that allows us to group a list of children without adding extra nodes to the DOM. It is useful when we want to return multiple elements from a component without wrapping them in a div or any other container element. We can use React.Fragment in two ways: using the shorthand syntax <>...</> or using the longhand syntax <React.Fragment>...</React.Fragment>. Both of these syntaxes will render the children without adding any extra nodes to the DOM.
